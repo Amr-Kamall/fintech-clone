@@ -1,39 +1,120 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { Link, Stack, useRouter, useSegments, Slot } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Colors from "@/constants/Colors";
+import { Text, TouchableOpacity } from "react-native";
+import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import { tokenCache } from "@/clerk/cash";
+import { useEffect } from "react";
+import { FintechProvider } from "@/store/FintechContext";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY as string;
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+if (!publishableKey) {
+  throw new Error(
+    "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
+  );
+}
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+function RootLayout() {
+  
+  const { isLoaded, isSignedIn } = useAuth();
+  const router = useRouter();
+  const segments = useSegments() as string[];
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+    console.log("is signed in", isSignedIn);
 
-  if (!loaded) {
-    return null;
+    const inAuthGroup = segments.includes("(authenticated)");
+
+    if (isSignedIn && !inAuthGroup) {
+      router.replace("/(authenticated)/(tabs)/home");
+    } else if (!isSignedIn) {
+      router.replace("/");
+    }
+  }, [isSignedIn]);
+
+  if (!isLoaded) {
+    return <Text>Loading...</Text>;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen
+        name="index"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="login"
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: {
+            backgroundColor: Colors.background,
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="arrow-back" size={30} color="black" />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <Link href="/help">
+              <Ionicons name="help-circle-outline" size={30} color="black" />
+            </Link>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="signup"
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: {
+            backgroundColor: Colors.background,
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="arrow-back" size={30} color="black" />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <Link href="/help">
+              <Ionicons name="help-circle-outline" size={30} color="black" />
+            </Link>
+          ),
+        }}
+      />
+      <Stack.Screen name="help" options={{ presentation: "modal" }} />
+      <Stack.Screen
+        name="verify/[phone]"
+        options={{
+          headerShadowVisible: false,
+          headerTitle: "",
+          headerStyle: {
+            backgroundColor: Colors.background,
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="arrow-back" size={30} color="black" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="(authenticated)/(tabs)"
+        options={{ headerShown: false }}
+      />
+    </Stack>
+  );
+}
+
+export default function Layout() {
+  return (
+    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+      <FintechProvider>
+        <RootLayout />
+      </FintechProvider>
+    </ClerkProvider>
   );
 }
