@@ -1,8 +1,10 @@
 import DropDownMenu from "@/components/DropdownMenu";
 import RoundButton from "@/components/RoundButton";
+import WidgetList from "@/components/sortableList/WidgetList";
 import Colors from "@/constants/Colors";
 import { useFintech } from "@/store/FintechContext";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+// import { BlurView } from "expo-blur";
 
 function Page() {
   const { runTransaction, clearTransaction, balance, transactions } =
@@ -27,6 +29,7 @@ function Page() {
           <Text style={styles.currency}>€</Text>
         </View>
       </View>
+
       {/* account actions */}
       <View style={styles.accountActions}>
         <RoundButton name="add" text="Add Money" onPress={handleAddMoney} />
@@ -38,8 +41,9 @@ function Page() {
         <RoundButton name="list" text="Details" onPress={() => {}} />
         <DropDownMenu />
       </View>
+
       {/* transactions */}
-      <Text style={styles.transactionsTitle}>Transactions</Text>
+      <Text style={styles.Title}>Transactions</Text>
       <View style={styles.transactionsContainer}>
         {transactions.length === 0 && (
           <Text style={{ color: Colors.gray, fontSize: 15 }}>
@@ -64,6 +68,10 @@ function Page() {
           </View>
         ))}
       </View>
+
+      {/* dragable list */}
+      <Text style={[styles.Title, { marginBottom: 15 }]}>Widgets</Text>
+      <WidgetList />
     </ScrollView>
   );
 }
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 15,
   },
-  transactionsTitle: {
+  Title: {
     fontSize: 22,
     fontWeight: "700",
     marginTop: 40,

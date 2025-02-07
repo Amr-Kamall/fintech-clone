@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 // interfaces
 interface Transaction {
@@ -23,6 +29,7 @@ const FintechContext = createContext<FintechContextType | undefined>(undefined);
 function FintechProvider({ children }: FintechProviderProps) {
   const [transactions, setTransaction] = useState<Transaction[]>([]);
   const [balance, setBalance] = useState<number>(0);
+
 
   function runTransaction(transaction: Transaction) {
     setTransaction((oldTransactions) => {

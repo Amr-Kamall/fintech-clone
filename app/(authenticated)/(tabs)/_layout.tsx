@@ -1,10 +1,35 @@
+import CustomeHeader from "@/components/CustomeHeader";
 import Colors from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { BlurView } from "expo-blur";
+import { Stack, Tabs } from "expo-router";
 
 function Layout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: Colors.primary }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: Colors.primary,
+        tabBarStyle: {
+          position: "absolute",
+          backgroundColor: "transparent",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          borderTopWidth: 0,
+          elevation: 0,
+        },
+        tabBarBackground: () => (
+          <BlurView
+            intensity={80}
+            style={{
+              flex: 1,
+              backgroundColor: "rgba(0,0,0,0.05)",
+            }}
+            // experimentalBlurMethod="dimezisBlurView"
+          />
+        ),
+      }}
+    >
       <Tabs.Screen
         name="home"
         options={{
@@ -12,6 +37,8 @@ function Layout() {
           tabBarIcon: ({ size, color }) => (
             <FontAwesome name="registered" size={size} color={color} />
           ),
+          header: () => <CustomeHeader />,
+          headerTransparent: true,
         }}
       />
       <Tabs.Screen
@@ -39,6 +66,8 @@ function Layout() {
           tabBarIcon: ({ size, color }) => (
             <FontAwesome name="bitcoin" size={size} color={color} />
           ),
+          header: () => <CustomeHeader />,
+          headerTransparent: true,
         }}
       />
       <Tabs.Screen
