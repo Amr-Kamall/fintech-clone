@@ -3,7 +3,7 @@ import RoundButton from "@/components/RoundButton";
 import WidgetList from "@/components/sortableList/WidgetList";
 import Colors from "@/constants/Colors";
 import { useFintech } from "@/store/FintechContext";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 // import { BlurView } from "expo-blur";
 
 function Page() {

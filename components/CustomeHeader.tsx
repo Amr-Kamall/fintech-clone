@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import RoundButton from "./RoundButton";
+import { Link } from "expo-router";
 
 function CustomeHeader() {
   const { top } = useSafeAreaInsets();
@@ -23,9 +24,11 @@ function CustomeHeader() {
     >
       <View style={styles.container}>
         {/* Left icon */}
-        <TouchableOpacity style={styles.accountCircleContainer}>
-          <Text style={styles.accountCircleText}>SG</Text>
-        </TouchableOpacity>
+        <Link href="/(authenticated)/(modals)/account" asChild>
+          <TouchableOpacity style={styles.accountCircleContainer}>
+            <Text style={styles.accountCircleText}>SG</Text>
+          </TouchableOpacity>
+        </Link>
 
         {/* Input search */}
         <View style={styles.inputContainer}>

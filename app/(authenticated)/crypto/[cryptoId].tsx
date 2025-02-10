@@ -44,7 +44,7 @@ function CryptoDetails() {
 
   // chart data
   const font = useFont(require("@/assets/fonts/SpaceMono-Regular.ttf"), 12);
-  const { state, isActive } = useChartPressState({ x: 0, y: { price: 0 } });
+  const { state, isActive } = useChartPressState({ x: "", y: { price: 0 } });
 
   // make effect when click on chart
   useEffect(

@@ -1,10 +1,17 @@
-import { Link, Stack, useRouter, useSegments, Slot } from "expo-router";
+import { Link, Stack, useRouter, useSegments } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "@/constants/Colors";
-import { Text, TouchableOpacity, View } from "react-native";
-import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
+import {
+  ActivityIndicator,
+  AppState,
+  AppStateStatus,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { ClerkProvider, useAuth } from "@clerk/clerk-expo";
 import { tokenCache } from "@/clerk/cash";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FintechProvider } from "@/store/FintechContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
@@ -26,6 +33,7 @@ function RootLayout() {
   const segments = useSegments() as string[];
   const [isMounted, setIsMounted] = useState(false);
 
+  // for remove strict mode from react native
   useEffect(() => {
     setIsMounted(true);
     configureReanimatedLogger({
@@ -34,6 +42,7 @@ function RootLayout() {
     });
   }, []);
 
+  // to go to the authenticated or not authenticated stack
   useEffect(() => {
     if (!isMounted || !isLoaded) return;
 
@@ -48,8 +57,13 @@ function RootLayout() {
     }
   }, [isSignedIn, isMounted, isLoaded]);
 
+  // for make a loading spinner if the app didn't mounted
   if (!isLoaded || !isMounted) {
-    return <Text>Loading...</Text>;
+    return (
+      <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
   }
 
   return (
@@ -144,6 +158,26 @@ function RootLayout() {
               </TouchableOpacity>
             </View>
           ),
+        }}
+      />
+      <Stack.Screen
+        name="(authenticated)/(modals)/lock"
+        options={{ headerShown: false, animation: "none" }}
+      />
+      <Stack.Screen
+        name="(authenticated)/(modals)/account"
+        options={{
+          animation: "fade",
+          presentation: "transparentModal",
+          title: "",
+          headerTransparent: true,
+          headerLeft: () => {
+            return (
+              <TouchableOpacity onPress={router.back}>
+                <Ionicons name="close-outline" size={34} color="#fff" />
+              </TouchableOpacity>
+            );
+          },
         }}
       />
     </Stack>

@@ -18,7 +18,7 @@ function Page() {
       <Text style={defaultStyles.sectionHeader}>Latest Crypto</Text>
       <View style={defaultStyles.block}>
         {currencies.map((currency, index: any) => (
-          <Link href={`/crypto/${currency.id}`} asChild key={currency.id}>
+          <Link  href={`/crypto/${currency.id}`} asChild key={currency.id}>
             <TouchableOpacity
               style={{
                 flexDirection: "row",
