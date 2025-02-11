@@ -87,6 +87,7 @@ function CryptoDetails() {
               flex: 1,
               alignItems: "center",
               paddingHorizontal: 20,
+              marginBottom:10,
               backgroundColor: Colors.background,
             }}
           >

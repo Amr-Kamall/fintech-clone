@@ -5,6 +5,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BlurView } from "expo-blur";
 import { Stack, Tabs, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useRef } from "react";
 import { AppState, AppStateStatus } from "react-native";
 

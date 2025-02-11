@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "expo-status-bar";
 
 function Page() {
   const { user } = useUser();
@@ -55,7 +56,7 @@ function Page() {
     const loadImage = async () => {
       const savedImage = await AsyncStorage.getItem("profileImage");
       if (savedImage) {
-        setPickedImage(savedImage);
+        // setPickedImage(savedImage);
       }
     };
     loadImage();
@@ -63,7 +64,7 @@ function Page() {
 
   return (
     <BlurView
-      //   experimentalBlurMethod="dimezisBlurView"
+      experimentalBlurMethod="dimezisBlurView"
       tint="dark"
       intensity={80}
       style={{
@@ -72,6 +73,8 @@ function Page() {
         backgroundColor: "rgba(0,0,0,0.5)",
       }}
     >
+      <StatusBar style="light" />
+
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         <TouchableOpacity onPress={onCaptureImage} style={styles.captureBtn}>
           {pickedImage ? (

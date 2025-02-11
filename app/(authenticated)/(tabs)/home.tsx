@@ -3,6 +3,7 @@ import RoundButton from "@/components/RoundButton";
 import WidgetList from "@/components/sortableList/WidgetList";
 import Colors from "@/constants/Colors";
 import { useFintech } from "@/store/FintechContext";
+import { StatusBar } from "expo-status-bar";
 import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 // import { BlurView } from "expo-blur";
 
@@ -21,7 +22,10 @@ function Page() {
   }
 
   return (
-    <ScrollView style={{ backgroundColor: Colors.background }}>
+    <ScrollView
+      style={{ backgroundColor: Colors.background, paddingVertical: 50 }}
+    >
+      <StatusBar style="dark" />
       {/* account balance */}
       <View style={styles.account}>
         <View style={styles.row}>
@@ -70,8 +74,10 @@ function Page() {
       </View>
 
       {/* dragable list */}
-      <Text style={[styles.Title, { marginBottom: 15 }]}>Widgets</Text>
-      <WidgetList />
+      <View style={{paddingBottom:50}}>
+        <Text style={[styles.Title, { marginBottom: 15 }]}>Widgets</Text>
+        <WidgetList />
+      </View>
     </ScrollView>
   );
 }
